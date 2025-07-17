@@ -1,0 +1,120 @@
+definitions:
+  github_com_transactions_api_internal_models.Transaction:
+    description: Детальная информация о транзакции между кошельками
+    properties:
+      amount:
+        type: number
+      date:
+        example: "2023-05-15T10:00:00Z"
+        format: date-time
+        type: string
+      receiver_address:
+        type: string
+      sender_address:
+        type: string
+    required:
+    - amount
+    - receiver_address
+    - sender_address
+    type: object
+info:
+  contact: {}
+paths:
+  /api/send:
+    post:
+      consumes:
+      - application/json
+      description: Совершает транзакцию перевода средств с одного кошелька на другой
+      parameters:
+      - description: Данные транзакции
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_transactions_api_internal_models.Transaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Транзакция успешно совершена
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: '''error'': ''message'''
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: '''error'': ''message'''
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Совершить перевод
+      tags:
+      - Transactions
+  /api/transactions:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает последний n совершенных транзакций
+      parameters:
+      - description: Количество транзакций
+        in: query
+        name: count
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_transactions_api_internal_models.Transaction'
+            type: array
+        "400":
+          description: '''error'': ''message'''
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: '''error'': ''message'''
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получить последние совершенные транзакции
+      tags:
+      - Transactions
+  /api/wallet/{address}/balance:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает текущий баланс по адресу кошелька
+      parameters:
+      - description: Адрес кошелька
+        in: path
+        name: address
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: number
+        "400":
+          description: '''error'': ''message'''
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: '''error'': ''message'''
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Получить баланс кошелька
+      tags:
+      - Wallet
+swagger: "2.0"

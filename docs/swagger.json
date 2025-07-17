@@ -1,0 +1,179 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/send": {
+            "post": {
+                "description": "Совершает транзакцию перевода средств с одного кошелька на другой",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Совершить перевод",
+                "parameters": [
+                    {
+                        "description": "Данные транзакции",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_transactions_api_internal_models.Transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Транзакция успешно совершена",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "400": {
+                        "description": "'error': 'message'",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "'error': 'message'",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/transactions": {
+            "get": {
+                "description": "Возвращает последний n совершенных транзакций",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Получить последние совершенные транзакции",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Количество транзакций",
+                        "name": "count",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_transactions_api_internal_models.Transaction"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "'error': 'message'",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "'error': 'message'",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wallet/{address}/balance": {
+            "get": {
+                "description": "Возвращает текущий баланс по адресу кошелька",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Получить баланс кошелька",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Адрес кошелька",
+                        "name": "address",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    "400": {
+                        "description": "'error': 'message'",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    },
+                    "500": {
+                        "description": "'error': 'message'",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "github_com_transactions_api_internal_models.Transaction": {
+            "description": "Детальная информация о транзакции между кошельками",
+            "type": "object",
+            "required": [
+                "amount",
+                "receiver_address",
+                "sender_address"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "number"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2023-05-15T10:00:00Z"
+                },
+                "receiver_address": {
+                    "type": "string"
+                },
+                "sender_address": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

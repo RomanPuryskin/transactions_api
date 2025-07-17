@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS wallets
+(
+	wallet_id SERIAL PRIMARY KEY,
+	address VARCHAR(64) NOT NULL UNIQUE,
+	balance NUMERIC(15,2) NOT NULL DEFAULT 100.00
+);
+
+CREATE TABLE IF NOT EXISTS transactions
+(
+	transaction_id SERIAL PRIMARY KEY,
+	sender_id INTEGER REFERENCES wallets(wallet_id),
+	receiver_id INTEGER REFERENCES wallets(wallet_id),
+	amount NUMERIC(15,2) NOT NULL,
+	date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
