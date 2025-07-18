@@ -17,7 +17,7 @@ import (
 // @Accept json
 // @Produce json
 // @Param task body models.Transaction true "Данные транзакции"
-// @Success 200 {object} map[string]interface{} "Транзакция успешно совершена"
+// @Success 201 {object} map[string]interface{} "Транзакция успешно совершена"
 // @Failure 400 {object} map[string]interface{} "'error': 'message'"
 // @Failure 500 {object}  map[string]interface{} "'error': 'message'"
 // @Router /api/send [post]
